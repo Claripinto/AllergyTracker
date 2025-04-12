@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 
-{% block title %}Panel Details - Allergy Extract Management System{% endblock %}
+{% block title %}Dettagli Pannello - Sistema di Gestione Estratti Allergici{% endblock %}
 
 {% block content %}
 <div class="page-header d-flex justify-content-between align-items-center">
@@ -12,12 +12,12 @@
             {% if panel.description %}
                 {{ panel.description }}
             {% else %}
-                Manage extracts in this panel
+                Gestisci gli estratti in questo pannello
             {% endif %}
         </p>
     </div>
     <a href="{{ url_for('panels') }}" class="btn btn-outline-secondary">
-        <i class="fas fa-arrow-left me-2"></i> Back to Panels
+        <i class="fas fa-arrow-left me-2"></i> Torna ai Pannelli
     </a>
 </div>
 
@@ -25,25 +25,25 @@
     <div class="col-md-8">
         <div class="card bg-dark mb-4">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h4><i class="fas fa-vial me-2"></i> Extracts in Panel</h4>
+                <h4><i class="fas fa-vial me-2"></i> Estratti nel Pannello</h4>
                 <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addExtractModal">
-                    <i class="fas fa-plus me-2"></i> Add Extract
+                    <i class="fas fa-plus me-2"></i> Aggiungi Estratto
                 </button>
             </div>
             <div class="card-body">
                 {% if panel.extracts %}
                     <ul class="list-group mb-3">
                         <li class="list-group-item bg-dark text-light fw-bold d-flex">
-                            <div style="width: 30%;">Name</div>
-                            <div style="width: 20%;">Type</div>
-                            <div style="width: 20%;">Lot Number</div>
-                            <div style="width: 15%;">Start Date</div>
-                            <div style="width: 15%;">Actions</div>
+                            <div style="width: 30%;">Nome</div>
+                            <div style="width: 20%;">Tipo</div>
+                            <div style="width: 20%;">Numero Lotto</div>
+                            <div style="width: 15%;">Data Inizio</div>
+                            <div style="width: 15%;">Azioni</div>
                         </li>
                         
                         <!-- Active Extracts -->
                         <li class="list-group-item bg-dark text-light fw-bold mt-3">
-                            <h5><i class="fas fa-check-circle text-success me-2"></i> Active Extracts</h5>
+                            <h5><i class="fas fa-check-circle text-success me-2"></i> Estratti Attivi</h5>
                         </li>
                         {% set active_extracts = panel.extracts|selectattr('end_date', 'none')|list %}
                         {% if active_extracts %}
@@ -52,12 +52,12 @@
                                     <div style="width: 30%;">{{ extract.name }}</div>
                                     <div style="width: 20%;">{{ extract.type }}</div>
                                     <div style="width: 20%;">{{ extract.lot_number }}</div>
-                                    <div style="width: 15%;">{{ extract.start_date.strftime('%Y-%m-%d') }}</div>
+                                    <div style="width: 15%;">{{ extract.start_date.strftime('%d/%m/%Y') }}</div>
                                     <div style="width: 15%;">
                                         <form action="{{ url_for('close_extract', extract_id=extract.id) }}" method="post"
                                               style="display: inline;">
                                             <button type="submit" class="btn btn-sm btn-outline-warning btn-confirm"
-                                                    data-bs-toggle="tooltip" title="Close this extract and try to replace with another from inventory">
+                                                    data-bs-toggle="tooltip" title="Chiudi questo estratto e cerca di sostituirlo con un altro dall'inventario">
                                                 <i class="fas fa-times"></i>
                                             </button>
                                         </form>
@@ -74,37 +74,37 @@
                                     <div class="modal-dialog">
                                         <div class="modal-content bg-dark">
                                             <div class="modal-header">
-                                                <h5 class="modal-title">Extract Details</h5>
+                                                <h5 class="modal-title">Dettagli Estratto</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
                                                 <div class="mb-3">
-                                                    <h6>Name:</h6>
+                                                    <h6>Nome:</h6>
                                                     <p>{{ extract.name }}</p>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <h6>Type:</h6>
+                                                    <h6>Tipo:</h6>
                                                     <p>{{ extract.type }}</p>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <h6>Lot Number:</h6>
+                                                    <h6>Numero Lotto:</h6>
                                                     <p>{{ extract.lot_number }}</p>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <h6>Manufacturer:</h6>
+                                                    <h6>Produttore:</h6>
                                                     <p>{{ extract.manufacturer }}</p>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <h6>Start Date:</h6>
-                                                    <p>{{ extract.start_date.strftime('%Y-%m-%d') }}</p>
+                                                    <h6>Data Inizio:</h6>
+                                                    <p>{{ extract.start_date.strftime('%d/%m/%Y') }}</p>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <h6>Status:</h6>
-                                                    <p><span class="badge bg-success">Active</span></p>
+                                                    <h6>Stato:</h6>
+                                                    <p><span class="badge bg-success">Attivo</span></p>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
                                             </div>
                                         </div>
                                     </div>
@@ -113,14 +113,14 @@
                         {% else %}
                             <li class="list-group-item bg-dark">
                                 <div class="alert alert-warning">
-                                    <i class="fas fa-exclamation-triangle me-2"></i> No active extracts in this panel.
+                                    <i class="fas fa-exclamation-triangle me-2"></i> Nessun estratto attivo in questo pannello.
                                 </div>
                             </li>
                         {% endif %}
                         
                         <!-- Closed Extracts -->
                         <li class="list-group-item bg-dark text-light fw-bold mt-3">
-                            <h5><i class="fas fa-history text-secondary me-2"></i> Closed Extracts</h5>
+                            <h5><i class="fas fa-history text-secondary me-2"></i> Estratti Chiusi</h5>
                         </li>
                         {% set closed_extracts = panel.extracts|rejectattr('end_date', 'none')|list %}
                         {% if closed_extracts %}
@@ -130,7 +130,7 @@
                                     <div style="width: 20%;">{{ extract.type }}</div>
                                     <div style="width: 20%;">{{ extract.lot_number }}</div>
                                     <div style="width: 15%;">
-                                        {{ extract.start_date.strftime('%Y-%m-%d') }} to {{ extract.end_date.strftime('%Y-%m-%d') }}
+                                        {{ extract.start_date.strftime('%d/%m/%Y') }} a {{ extract.end_date.strftime('%d/%m/%Y') }}
                                     </div>
                                     <div style="width: 15%;">
                                         <button type="button" class="btn btn-sm btn-outline-info" 
@@ -146,41 +146,41 @@
                                     <div class="modal-dialog">
                                         <div class="modal-content bg-dark">
                                             <div class="modal-header">
-                                                <h5 class="modal-title">Extract Details</h5>
+                                                <h5 class="modal-title">Dettagli Estratto</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
                                                 <div class="mb-3">
-                                                    <h6>Name:</h6>
+                                                    <h6>Nome:</h6>
                                                     <p>{{ extract.name }}</p>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <h6>Type:</h6>
+                                                    <h6>Tipo:</h6>
                                                     <p>{{ extract.type }}</p>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <h6>Lot Number:</h6>
+                                                    <h6>Numero Lotto:</h6>
                                                     <p>{{ extract.lot_number }}</p>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <h6>Manufacturer:</h6>
+                                                    <h6>Produttore:</h6>
                                                     <p>{{ extract.manufacturer }}</p>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <h6>Start Date:</h6>
-                                                    <p>{{ extract.start_date.strftime('%Y-%m-%d') }}</p>
+                                                    <h6>Data Inizio:</h6>
+                                                    <p>{{ extract.start_date.strftime('%d/%m/%Y') }}</p>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <h6>End Date:</h6>
-                                                    <p>{{ extract.end_date.strftime('%Y-%m-%d') }}</p>
+                                                    <h6>Data Fine:</h6>
+                                                    <p>{{ extract.end_date.strftime('%d/%m/%Y') }}</p>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <h6>Status:</h6>
-                                                    <p><span class="badge bg-secondary">Closed</span></p>
+                                                    <h6>Stato:</h6>
+                                                    <p><span class="badge bg-secondary">Chiuso</span></p>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
                                             </div>
                                         </div>
                                     </div>
@@ -189,14 +189,14 @@
                         {% else %}
                             <li class="list-group-item bg-dark">
                                 <div class="alert alert-info">
-                                    <i class="fas fa-info-circle me-2"></i> No closed extracts in this panel.
+                                    <i class="fas fa-info-circle me-2"></i> Nessun estratto chiuso in questo pannello.
                                 </div>
                             </li>
                         {% endif %}
                     </ul>
                 {% else %}
                     <div class="alert alert-info">
-                        <i class="fas fa-info-circle me-2"></i> No extracts in this panel. Add some extracts using the button above.
+                        <i class="fas fa-info-circle me-2"></i> Nessun estratto in questo pannello. Aggiungi degli estratti usando il pulsante sopra.
                     </div>
                 {% endif %}
             </div>
@@ -206,25 +206,25 @@
     <div class="col-md-4">
         <div class="card bg-dark mb-4">
             <div class="card-header">
-                <h4><i class="fas fa-info-circle me-2"></i> Panel Information</h4>
+                <h4><i class="fas fa-info-circle me-2"></i> Informazioni Pannello</h4>
             </div>
             <div class="card-body">
                 <div class="mb-3">
-                    <h6>Panel Name:</h6>
+                    <h6>Nome Pannello:</h6>
                     <p>{{ panel.name }}</p>
                 </div>
                 {% if panel.description %}
                     <div class="mb-3">
-                        <h6>Description:</h6>
+                        <h6>Descrizione:</h6>
                         <p>{{ panel.description }}</p>
                     </div>
                 {% endif %}
                 <div class="mb-3">
-                    <h6>Active Extracts:</h6>
+                    <h6>Estratti Attivi:</h6>
                     <p>{{ panel.extracts|selectattr('end_date', 'none')|list|length }}</p>
                 </div>
                 <div class="mb-3">
-                    <h6>Total Extracts:</h6>
+                    <h6>Estratti Totali:</h6>
                     <p>{{ panel.extracts|length }}</p>
                 </div>
             </div>
@@ -232,14 +232,14 @@
         
         <div class="card bg-dark">
             <div class="card-header">
-                <h4><i class="fas fa-lightbulb me-2"></i> Tips</h4>
+                <h4><i class="fas fa-lightbulb me-2"></i> Suggerimenti</h4>
             </div>
             <div class="card-body">
                 <ul>
-                    <li>Click the <i class="fas fa-plus"></i> button to add extracts from inventory.</li>
-                    <li>Click the <i class="fas fa-times"></i> button to close an active extract.</li>
-                    <li>When closing an extract, the system will try to find a replacement in inventory.</li>
-                    <li>Click the <i class="fas fa-info-circle"></i> button to view details of an extract.</li>
+                    <li>Clicca il pulsante <i class="fas fa-plus"></i> per aggiungere estratti dall'inventario.</li>
+                    <li>Clicca il pulsante <i class="fas fa-times"></i> per chiudere un estratto attivo.</li>
+                    <li>Quando si chiude un estratto, il sistema cercherà di trovare un sostituto nell'inventario.</li>
+                    <li>Clicca il pulsante <i class="fas fa-info-circle"></i> per visualizzare i dettagli di un estratto.</li>
                 </ul>
             </div>
         </div>
@@ -251,32 +251,32 @@
     <div class="modal-dialog">
         <div class="modal-content bg-dark">
             <div class="modal-header">
-                <h5 class="modal-title" id="addExtractModalLabel">Add Extract to Panel</h5>
+                <h5 class="modal-title" id="addExtractModalLabel">Aggiungi Estratto al Pannello</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="{{ url_for('add_extract_to_panel', panel_id=panel.id) }}" method="post">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="inventory_id" class="form-label">Select Extract from Inventory *</label>
+                        <label for="inventory_id" class="form-label">Seleziona Estratto dall'Inventario *</label>
                         <select class="form-select" id="inventory_id" name="inventory_id" required>
-                            <option value="">Select an extract</option>
+                            <option value="">Seleziona un estratto</option>
                             {% for extract in inventory %}
                                 <option value="{{ extract.id }}">
-                                    {{ extract.name }} ({{ extract.type }}) - {{ extract.lot_number }} - Expires: {{ extract.expiration_date.strftime('%Y-%m-%d') }}
+                                    {{ extract.name }} ({{ extract.type }}) - {{ extract.lot_number }} - Scade: {{ extract.expiration_date.strftime('%d/%m/%Y') }}
                                 </option>
                             {% endfor %}
                         </select>
                         {% if not inventory %}
                             <div class="form-text text-warning">
-                                <i class="fas fa-exclamation-triangle me-1"></i> No extracts available in inventory.
+                                <i class="fas fa-exclamation-triangle me-1"></i> Nessun estratto disponibile nell'inventario.
                             </div>
                         {% endif %}
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
                     <button type="submit" class="btn btn-primary" {% if not inventory %}disabled{% endif %}>
-                        Add to Panel
+                        Aggiungi al Pannello
                     </button>
                 </div>
             </form>

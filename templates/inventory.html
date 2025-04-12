@@ -1,16 +1,16 @@
 {% extends 'layout.html' %}
 
-{% block title %}Inventory - Allergy Extract Management System{% endblock %}
+{% block title %}Inventario - Sistema di Gestione Estratti Allergici{% endblock %}
 
 {% block content %}
 <div class="inventory-page">
     <div class="page-header d-flex justify-content-between align-items-center">
         <div>
-            <h1 class="display-4"><i class="fas fa-boxes me-2"></i> Inventory</h1>
-            <p class="lead">Manage allergy extract inventory</p>
+            <h1 class="display-4"><i class="fas fa-boxes me-2"></i> Inventario</h1>
+            <p class="lead">Gestisci l'inventario degli estratti allergici</p>
         </div>
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addInventoryModal">
-            <i class="fas fa-plus me-2"></i> Add New Extract
+            <i class="fas fa-plus me-2"></i> Aggiungi Nuovo Estratto
         </button>
     </div>
     
@@ -19,24 +19,24 @@
         <div class="col-md-6">
             <div class="input-group">
                 <span class="input-group-text"><i class="fas fa-search"></i></span>
-                <input type="text" class="form-control" id="searchInput" placeholder="Search extracts...">
+                <input type="text" class="form-control" id="searchInput" placeholder="Cerca estratti...">
             </div>
         </div>
         <div class="col-md-6">
             <div class="d-flex justify-content-end">
                 <div class="me-2">
                     <span class="badge bg-success p-2">
-                        <i class="fas fa-check-circle me-1"></i> Good
+                        <i class="fas fa-check-circle me-1"></i> Valido
                     </span>
                 </div>
                 <div class="me-2">
                     <span class="badge bg-warning p-2">
-                        <i class="fas fa-exclamation-circle me-1"></i> Expiring soon
+                        <i class="fas fa-exclamation-circle me-1"></i> In scadenza
                     </span>
                 </div>
                 <div>
                     <span class="badge bg-danger p-2">
-                        <i class="fas fa-times-circle me-1"></i> Expired
+                        <i class="fas fa-times-circle me-1"></i> Scaduto
                     </span>
                 </div>
             </div>
@@ -50,13 +50,13 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Type</th>
-                            <th>Lot Number</th>
-                            <th>Manufacturer</th>
-                            <th>Expiration Date</th>
-                            <th>Status</th>
-                            <th>Actions</th>
+                            <th>Nome</th>
+                            <th>Tipo</th>
+                            <th>Numero Lotto</th>
+                            <th>Produttore</th>
+                            <th>Data Scadenza</th>
+                            <th>Stato</th>
+                            <th>Azioni</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -67,15 +67,15 @@
                                     <td>{{ extract.type }}</td>
                                     <td>{{ extract.lot_number }}</td>
                                     <td>{{ extract.manufacturer }}</td>
-                                    <td>{{ extract.expiration_date.strftime('%Y-%m-%d') }}</td>
+                                    <td>{{ extract.expiration_date.strftime('%d/%m/%Y') }}</td>
                                     <td>
                                         {% set days_until_expiry = (extract.expiration_date - now().date()).days %}
                                         {% if days_until_expiry < 0 %}
-                                            <span class="badge bg-danger">Expired</span>
+                                            <span class="badge bg-danger">Scaduto</span>
                                         {% elif days_until_expiry <= 30 %}
-                                            <span class="badge bg-warning">Expires in {{ days_until_expiry }} days</span>
+                                            <span class="badge bg-warning">Scade in {{ days_until_expiry }} giorni</span>
                                         {% else %}
-                                            <span class="badge bg-success">Good</span>
+                                            <span class="badge bg-success">Valido</span>
                                         {% endif %}
                                     </td>
                                     <td>
@@ -93,39 +93,39 @@
                                     <div class="modal-dialog">
                                         <div class="modal-content bg-dark">
                                             <div class="modal-header">
-                                                <h5 class="modal-title">Extract Details</h5>
+                                                <h5 class="modal-title">Dettagli Estratto</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
                                                 <div class="mb-3">
-                                                    <h6>Name:</h6>
+                                                    <h6>Nome:</h6>
                                                     <p>{{ extract.name }}</p>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <h6>Type:</h6>
+                                                    <h6>Tipo:</h6>
                                                     <p>{{ extract.type }}</p>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <h6>Lot Number:</h6>
+                                                    <h6>Numero Lotto:</h6>
                                                     <p>{{ extract.lot_number }}</p>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <h6>Manufacturer:</h6>
+                                                    <h6>Produttore:</h6>
                                                     <p>{{ extract.manufacturer }}</p>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <h6>Expiration Date:</h6>
-                                                    <p>{{ extract.expiration_date.strftime('%Y-%m-%d') }}</p>
+                                                    <h6>Data Scadenza:</h6>
+                                                    <p>{{ extract.expiration_date.strftime('%d/%m/%Y') }}</p>
                                                     {% set days_until_expiry = (extract.expiration_date - now().date()).days %}
                                                     {% if days_until_expiry < 0 %}
-                                                        <div class="alert alert-danger">This extract is expired!</div>
+                                                        <div class="alert alert-danger">Questo estratto è scaduto!</div>
                                                     {% elif days_until_expiry <= 30 %}
-                                                        <div class="alert alert-warning">This extract will expire in {{ days_until_expiry }} days.</div>
+                                                        <div class="alert alert-warning">Questo estratto scadrà in {{ days_until_expiry }} giorni.</div>
                                                     {% endif %}
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
                                             </div>
                                         </div>
                                     </div>
@@ -133,7 +133,7 @@
                             {% endfor %}
                         {% else %}
                             <tr>
-                                <td colspan="7" class="text-center">No extracts in inventory. Add some extracts!</td>
+                                <td colspan="7" class="text-center">Nessun estratto in inventario. Aggiungi degli estratti!</td>
                             </tr>
                         {% endif %}
                     </tbody>
@@ -148,40 +148,40 @@
     <div class="modal-dialog">
         <div class="modal-content bg-dark">
             <div class="modal-header">
-                <h5 class="modal-title" id="addInventoryModalLabel">Add New Extract to Inventory</h5>
+                <h5 class="modal-title" id="addInventoryModalLabel">Aggiungi Nuovo Estratto all'Inventario</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="{{ url_for('add_inventory') }}" method="post">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="name" class="form-label">Extract Name *</label>
+                        <label for="name" class="form-label">Nome Estratto *</label>
                         <input type="text" class="form-control" id="name" name="name" required>
                     </div>
                     <div class="mb-3">
-                        <label for="type" class="form-label">Type *</label>
+                        <label for="type" class="form-label">Tipo *</label>
                         <select class="form-select" id="type" name="type" required>
-                            <option value="">Select type</option>
+                            <option value="">Seleziona tipo</option>
                             <option value="inalante">Inalante</option>
                             <option value="alimentare">Alimentare</option>
                             <option value="controllo">Controllo</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="lot_number" class="form-label">Lot Number *</label>
+                        <label for="lot_number" class="form-label">Numero Lotto *</label>
                         <input type="text" class="form-control" id="lot_number" name="lot_number" required>
                     </div>
                     <div class="mb-3">
-                        <label for="manufacturer" class="form-label">Manufacturer *</label>
+                        <label for="manufacturer" class="form-label">Produttore *</label>
                         <input type="text" class="form-control" id="manufacturer" name="manufacturer" required>
                     </div>
                     <div class="mb-3">
-                        <label for="expiration_date" class="form-label">Expiration Date *</label>
+                        <label for="expiration_date" class="form-label">Data Scadenza *</label>
                         <input type="date" class="form-control" id="expiration_date" name="expiration_date" required>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Add Extract</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                    <button type="submit" class="btn btn-primary">Aggiungi Estratto</button>
                 </div>
             </form>
         </div>

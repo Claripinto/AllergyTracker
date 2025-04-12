@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="it" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Allergy Extract Management System{% endblock %}</title>
+    <title>{% block title %}Sistema di Gestione Estratti Allergici{% endblock %}</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css">
     <!-- Font Awesome for icons -->
@@ -16,7 +16,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="{{ url_for('home') }}">
-                <i class="fas fa-vial me-2"></i> Allergy Extract Manager
+                <i class="fas fa-vial me-2"></i> Gestione Estratti Allergici
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,19 +33,19 @@
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == url_for('panels') %}active{% endif %}" 
                            href="{{ url_for('panels') }}">
-                            <i class="fas fa-layer-group me-1"></i> Panels
+                            <i class="fas fa-layer-group me-1"></i> Pannelli
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == url_for('inventory') %}active{% endif %}" 
                            href="{{ url_for('inventory') }}">
-                            <i class="fas fa-boxes me-1"></i> Inventory
+                            <i class="fas fa-boxes me-1"></i> Inventario
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == url_for('reports') %}active{% endif %}" 
                            href="{{ url_for('reports') }}">
-                            <i class="fas fa-chart-bar me-1"></i> Reports
+                            <i class="fas fa-chart-bar me-1"></i> Report
                         </a>
                     </li>
                 </ul>
@@ -77,11 +77,11 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <h5>Allergy Extract Management System</h5>
-                    <p>A simple but effective application for managing allergy extracts in medical facilities.</p>
+                    <h5>Sistema di Gestione Estratti Allergici</h5>
+                    <p>Un'applicazione semplice ma efficace per la gestione degli estratti allergici nelle strutture mediche.</p>
                 </div>
                 <div class="col-md-6 text-md-end">
-                    <p>&copy; 2025 Allergy Extract Management</p>
+                    <p>&copy; 2025 Gestione Estratti Allergici</p>
                 </div>
             </div>
         </div>
