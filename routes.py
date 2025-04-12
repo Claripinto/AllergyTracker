@@ -7,6 +7,7 @@ from sqlalchemy import extract as sql_extract
 from app import app, db
 from models import Panel, PanelExtract, InventoryExtract, ExtractUsageHistory
 from utils import find_replacement_extract
+from email_utils import get_expiring_extracts, send_expiration_notification
 
 # Helper function to use in templates to get current date
 @app.context_processor
@@ -305,6 +306,48 @@ def delete_inventory_extract(extract_id):
     
     flash(f'Estratto "{extract_name}" eliminato dall\'inventario', 'success')
     return redirect(url_for('inventory'))
+
+
+@app.route('/notifications')
+def notifications():
+    """Pagina delle notifiche con form per l'invio email"""
+    # Default a 180 giorni (6 mesi)
+    days_threshold = request.args.get('days_threshold', 180, type=int)
+    
+    # Ottieni gli estratti in scadenza
+    expiring_extracts = get_expiring_extracts(days_threshold)
+    
+    return render_template('notifications.html', 
+                          expiring_extracts=expiring_extracts,
+                          days_threshold=days_threshold)
+
+
+@app.route('/notifications/send', methods=['POST'])
+def send_notifications():
+    """Invia notifiche email per gli estratti in scadenza"""
+    email = request.form.get('email')
+    days_threshold = int(request.form.get('days_threshold', 180))
+    
+    if not email:
+        flash('L\'indirizzo email è obbligatorio', 'danger')
+        return redirect(url_for('notifications'))
+    
+    # Ottieni gli estratti in scadenza
+    expiring_extracts = get_expiring_extracts(days_threshold)
+    
+    # Invia la notifica
+    success, message = send_expiration_notification(email, expiring_extracts, days_threshold)
+    
+    if success:
+        flash(message, 'success')
+    else:
+        flash(message, 'danger')
+        
+        # Se l'errore è dovuto alla chiave API mancante, informa l'utente
+        if 'non configurata' in message:
+            flash('Per utilizzare le notifiche email, è necessario configurare la chiave API SendGrid', 'warning')
+    
+    return redirect(url_for('notifications', days_threshold=days_threshold))
 
 
 @app.errorhandler(500)
