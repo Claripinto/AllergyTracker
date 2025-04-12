@@ -28,6 +28,8 @@ class InventoryExtract(Extract):
     
     id = db.Column(db.Integer, db.ForeignKey('extract.id'), primary_key=True)
     expiration_date = db.Column(db.Date, nullable=False)
+    loading_date = db.Column(db.Date, nullable=False, default=datetime.now().date())
+    quantity = db.Column(db.Integer, nullable=False, default=1)
     
     __mapper_args__ = {
         'polymorphic_identity': 'inventory',
@@ -40,7 +42,9 @@ class InventoryExtract(Extract):
             'type': self.type,
             'lot_number': self.lot_number,
             'manufacturer': self.manufacturer,
-            'expiration_date': self.expiration_date.strftime('%Y-%m-%d') if self.expiration_date else None
+            'expiration_date': self.expiration_date.strftime('%Y-%m-%d') if self.expiration_date else None,
+            'loading_date': self.loading_date.strftime('%Y-%m-%d') if self.loading_date else None,
+            'quantity': self.quantity
         }
 
 

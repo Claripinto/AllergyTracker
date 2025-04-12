@@ -173,8 +173,8 @@ def close_extract(extract_id):
 
 @app.route('/inventory')
 def inventory():
-    """List all extracts in inventory"""
-    inventory_extracts = InventoryExtract.query.order_by(InventoryExtract.expiration_date).all()
+    """List all extracts in inventory sorted by expiration date (closest first)"""
+    inventory_extracts = InventoryExtract.query.order_by(InventoryExtract.expiration_date.asc()).all()
     return render_template('inventory.html', inventory=inventory_extracts)
 
 
@@ -207,6 +207,7 @@ def add_inventory():
         return redirect(url_for('inventory'))
     
     # Add the specified number of extracts
+    loading_date = datetime.now().date()
     for i in range(quantity):
         # Create new inventory extract
         new_extract = InventoryExtract(
@@ -214,7 +215,9 @@ def add_inventory():
             type=extract_type,
             lot_number=lot_number,
             manufacturer=manufacturer,
-            expiration_date=exp_date
+            expiration_date=exp_date,
+            loading_date=loading_date,
+            quantity=1  # Each record represents one unit
         )
         db.session.add(new_extract)
     

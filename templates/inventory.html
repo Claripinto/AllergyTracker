@@ -54,7 +54,9 @@
                             <th>Tipo</th>
                             <th>Numero Lotto</th>
                             <th>Produttore</th>
+                            <th>Data Carico</th>
                             <th>Data Scadenza</th>
+                            <th>Quantità</th>
                             <th>Stato</th>
                             <th>Azioni</th>
                         </tr>
@@ -62,17 +64,23 @@
                     <tbody>
                         {% if inventory %}
                             {% for extract in inventory %}
-                                <tr class="inventory-extract" data-expiration="{{ extract.expiration_date }}">
+                                {% set days_until_expiry = (extract.expiration_date - now().date()).days %}
+                                {% set expires_soon = days_until_expiry <= 180 and days_until_expiry > 0 %}
+                                {% set is_expired = days_until_expiry <= 0 %}
+                                
+                                <tr class="inventory-extract" data-expiration="{{ extract.expiration_date }}" 
+                                    {% if expires_soon or is_expired %}style="color: red !important; font-weight: bold;"{% endif %}>
                                     <td>{{ extract.name }}</td>
                                     <td>{{ extract.type }}</td>
                                     <td>{{ extract.lot_number }}</td>
                                     <td>{{ extract.manufacturer }}</td>
+                                    <td>{{ extract.loading_date.strftime('%d/%m/%Y') }}</td>
                                     <td>{{ extract.expiration_date.strftime('%d/%m/%Y') }}</td>
+                                    <td>{{ extract.quantity }}</td>
                                     <td>
-                                        {% set days_until_expiry = (extract.expiration_date - now().date()).days %}
-                                        {% if days_until_expiry < 0 %}
+                                        {% if is_expired %}
                                             <span class="badge bg-danger">Scaduto</span>
-                                        {% elif days_until_expiry <= 30 %}
+                                        {% elif expires_soon %}
                                             <span class="badge bg-warning">Scade in {{ days_until_expiry }} giorni</span>
                                         {% else %}
                                             <span class="badge bg-success">Valido</span>
@@ -116,14 +124,24 @@
                                                     <p>{{ extract.manufacturer }}</p>
                                                 </div>
                                                 <div class="mb-3">
+                                                    <h6>Data Carico:</h6>
+                                                    <p>{{ extract.loading_date.strftime('%d/%m/%Y') }}</p>
+                                                </div>
+                                                <div class="mb-3">
                                                     <h6>Data Scadenza:</h6>
-                                                    <p>{{ extract.expiration_date.strftime('%d/%m/%Y') }}</p>
+                                                    <p {% if days_until_expiry <= 180 %}style="color: red; font-weight: bold;"{% endif %}>
+                                                        {{ extract.expiration_date.strftime('%d/%m/%Y') }}
+                                                    </p>
                                                     {% set days_until_expiry = (extract.expiration_date - now().date()).days %}
                                                     {% if days_until_expiry < 0 %}
                                                         <div class="alert alert-danger">Questo estratto è scaduto!</div>
-                                                    {% elif days_until_expiry <= 30 %}
+                                                    {% elif days_until_expiry <= 180 %}
                                                         <div class="alert alert-warning">Questo estratto scadrà in {{ days_until_expiry }} giorni.</div>
                                                     {% endif %}
+                                                </div>
+                                                <div class="mb-3">
+                                                    <h6>Quantità:</h6>
+                                                    <p>{{ extract.quantity }} unità</p>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
