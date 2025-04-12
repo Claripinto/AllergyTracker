@@ -80,10 +80,12 @@
                                     </td>
                                     <td>
                                         <div class="btn-group btn-group-sm" role="group">
-                                            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#viewExtractModal{{ extract.id }}">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                            <!-- More actions can be added here -->
+                                            <form action="{{ url_for('delete_inventory_extract', extract_id=extract.id) }}" method="post" 
+                                                  onsubmit="return confirm('Sei sicuro di voler eliminare questo estratto dall\'inventario?');">
+                                                <button type="submit" class="btn btn-outline-danger" title="Elimina estratto">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </form>
                                         </div>
                                     </td>
                                 </tr>

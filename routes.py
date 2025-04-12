@@ -276,6 +276,19 @@ def not_found_error(error):
     return render_template('404.html'), 404
 
 
+@app.route('/inventory/delete/<int:extract_id>', methods=['POST'])
+def delete_inventory_extract(extract_id):
+    """Delete an extract from inventory"""
+    extract = InventoryExtract.query.get_or_404(extract_id)
+    extract_name = extract.name
+    
+    db.session.delete(extract)
+    db.session.commit()
+    
+    flash(f'Estratto "{extract_name}" eliminato dall\'inventario', 'success')
+    return redirect(url_for('inventory'))
+
+
 @app.errorhandler(500)
 def internal_error(error):
     db.session.rollback()
