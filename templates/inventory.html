@@ -178,6 +178,13 @@
                         <label for="expiration_date" class="form-label">Data Scadenza *</label>
                         <input type="date" class="form-control" id="expiration_date" name="expiration_date" required>
                     </div>
+                    <div class="mb-3">
+                        <label for="quantity" class="form-label">Quantità *</label>
+                        <input type="number" class="form-control" id="quantity" name="quantity" min="1" value="1" required>
+                        <div class="form-text text-info">
+                            <i class="fas fa-info-circle me-1"></i> Inserisci il numero di fiale/confezioni dello stesso lotto da aggiungere all'inventario.
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>

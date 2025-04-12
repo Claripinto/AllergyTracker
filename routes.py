@@ -52,20 +52,20 @@ def add_panel():
     description = request.form.get('description', '')
     
     if not name:
-        flash('Panel name is required', 'danger')
+        flash('Il nome del pannello è obbligatorio', 'danger')
         return redirect(url_for('panels'))
     
     # Check if panel with this name already exists
     existing_panel = Panel.query.filter_by(name=name).first()
     if existing_panel:
-        flash(f'Panel with name "{name}" already exists', 'warning')
+        flash(f'Un pannello con il nome "{name}" esiste già', 'warning')
         return redirect(url_for('panels'))
     
     new_panel = Panel(name=name, description=description)
     db.session.add(new_panel)
     db.session.commit()
     
-    flash(f'Panel "{name}" added successfully', 'success')
+    flash(f'Pannello "{name}" aggiunto con successo', 'success')
     return redirect(url_for('panels'))
 
 
@@ -84,7 +84,7 @@ def add_extract_to_panel(panel_id):
     inventory_id = request.form.get('inventory_id')
     
     if not inventory_id:
-        flash('Please select an extract', 'danger')
+        flash('Seleziona un estratto', 'danger')
         return redirect(url_for('panel_detail', panel_id=panel_id))
     
     # Get the extract from inventory
@@ -105,7 +105,7 @@ def add_extract_to_panel(panel_id):
     db.session.delete(inventory_extract)
     db.session.commit()
     
-    flash(f'Extract "{inventory_extract.name}" added to panel', 'success')
+    flash(f'Estratto "{inventory_extract.name}" aggiunto al pannello', 'success')
     return redirect(url_for('panel_detail', panel_id=panel_id))
 
 
@@ -148,9 +148,9 @@ def close_extract(extract_id):
         db.session.add(new_extract)
         db.session.delete(replacement)
         
-        flash(f'Extract closed and replaced with a new one from inventory', 'success')
+        flash(f'Estratto chiuso e sostituito con uno nuovo dall\'inventario', 'success')
     else:
-        flash(f'Extract closed. No replacement found in inventory.', 'warning')
+        flash(f'Estratto chiuso. Nessun sostituto trovato nell\'inventario.', 'warning')
     
     db.session.commit()
     return redirect(url_for('panel_detail', panel_id=panel_id))
@@ -165,37 +165,51 @@ def inventory():
 
 @app.route('/inventory/add', methods=['POST'])
 def add_inventory():
-    """Add a new extract to inventory"""
+    """Add new extracts to inventory, with support for multiple items of the same lot number"""
     name = request.form.get('name')
     extract_type = request.form.get('type')
     lot_number = request.form.get('lot_number')
     manufacturer = request.form.get('manufacturer')
     expiration_date = request.form.get('expiration_date')
     
+    # Get quantity field (default to 1 if not provided)
+    try:
+        quantity = int(request.form.get('quantity', 1))
+        if quantity < 1:
+            quantity = 1  # Ensure at least one extract is added
+    except ValueError:
+        quantity = 1
+    
     # Validate inputs
     if not all([name, extract_type, lot_number, manufacturer, expiration_date]):
-        flash('All fields are required', 'danger')
+        flash('Tutti i campi sono obbligatori', 'danger')
         return redirect(url_for('inventory'))
     
     try:
         exp_date = datetime.strptime(expiration_date, '%Y-%m-%d').date()
     except ValueError:
-        flash('Invalid expiration date format. Use YYYY-MM-DD', 'danger')
+        flash('Formato data di scadenza non valido. Usa AAAA-MM-GG', 'danger')
         return redirect(url_for('inventory'))
     
-    # Create new inventory extract
-    new_extract = InventoryExtract(
-        name=name,
-        type=extract_type,
-        lot_number=lot_number,
-        manufacturer=manufacturer,
-        expiration_date=exp_date
-    )
+    # Add the specified number of extracts
+    for i in range(quantity):
+        # Create new inventory extract
+        new_extract = InventoryExtract(
+            name=name,
+            type=extract_type,
+            lot_number=lot_number,
+            manufacturer=manufacturer,
+            expiration_date=exp_date
+        )
+        db.session.add(new_extract)
     
-    db.session.add(new_extract)
     db.session.commit()
     
-    flash(f'Extract "{name}" added to inventory', 'success')
+    if quantity == 1:
+        flash(f'Estratto "{name}" aggiunto all\'inventario', 'success')
+    else:
+        flash(f'{quantity} estratti "{name}" aggiunti all\'inventario', 'success')
+    
     return redirect(url_for('inventory'))
 
 
@@ -212,13 +226,13 @@ def generate_report():
     """Generate a report for a specific year"""
     year = request.form.get('year')
     if not year:
-        flash('Please select a year', 'danger')
+        flash('Seleziona un anno', 'danger')
         return redirect(url_for('reports'))
     
     try:
         year = int(year)
     except ValueError:
-        flash('Invalid year format', 'danger')
+        flash('Formato anno non valido', 'danger')
         return redirect(url_for('reports'))
     
     # Get all extracts used in the specified year
@@ -227,7 +241,7 @@ def generate_report():
     ).order_by(ExtractUsageHistory.start_date).all()
     
     if not extracts:
-        flash(f'No extracts used in {year}', 'warning')
+        flash(f'Nessun estratto utilizzato nel {year}', 'warning')
         return redirect(url_for('reports'))
     
     # Generate CSV
@@ -235,7 +249,7 @@ def generate_report():
     writer = csv.writer(output)
     
     # Write header
-    writer.writerow(['Name', 'Type', 'Lot Number', 'Manufacturer', 'Start Date', 'End Date', 'Panel'])
+    writer.writerow(['Nome', 'Tipo', 'Numero Lotto', 'Produttore', 'Data Inizio', 'Data Fine', 'Pannello'])
     
     # Write data
     for extract in extracts:
@@ -244,14 +258,14 @@ def generate_report():
             extract.type,
             extract.lot_number,
             extract.manufacturer,
-            extract.start_date.strftime('%Y-%m-%d'),
-            extract.end_date.strftime('%Y-%m-%d') if extract.end_date else 'Still in use',
+            extract.start_date.strftime('%d/%m/%Y'),
+            extract.end_date.strftime('%d/%m/%Y') if extract.end_date else 'Ancora in uso',
             extract.panel_name
         ])
     
     # Create response
     response = make_response(output.getvalue())
-    response.headers["Content-Disposition"] = f"attachment; filename=extract_report_{year}.csv"
+    response.headers["Content-Disposition"] = f"attachment; filename=report_estratti_{year}.csv"
     response.headers["Content-type"] = "text/csv"
     
     return response
