@@ -69,6 +69,21 @@ def add_panel():
     return redirect(url_for('panels'))
 
 
+@app.route('/panels/delete/<int:panel_id>', methods=['POST'])
+def delete_panel(panel_id):
+    """Delete a panel and all its associated extracts"""
+    panel = Panel.query.get_or_404(panel_id)
+    panel_name = panel.name
+    
+    # Delete all associated extracts (this will also delete the panel due to cascading)
+    PanelExtract.query.filter_by(panel_id=panel_id).delete()
+    db.session.delete(panel)
+    db.session.commit()
+    
+    flash(f'Pannello "{panel_name}" eliminato con successo', 'success')
+    return redirect(url_for('panels'))
+
+
 @app.route('/panels/<int:panel_id>')
 def panel_detail(panel_id):
     """Show panel details with options to add extracts"""
