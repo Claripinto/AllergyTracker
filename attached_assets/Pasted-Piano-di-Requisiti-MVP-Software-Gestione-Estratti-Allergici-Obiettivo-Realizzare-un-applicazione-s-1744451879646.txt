@@ -1,0 +1,95 @@
+Piano di Requisiti – MVP Software Gestione Estratti Allergici
+Obiettivo
+Realizzare un'applicazione semplice ma efficace per gestire:
+
+I pannelli contenenti estratti allergici in uso in ambulatorio.
+
+Il magazzino degli estratti allergici.
+
+Il passaggio automatico di un estratto dal magazzino al pannello, al termine di un estratto in uso.
+
+La generazione di un report annuale degli estratti utilizzati.
+
+Funzionalità principali
+1. Gestione Pannelli in Uso
+Ogni pannello contiene più estratti. Per ogni estratto vanno registrati:
+
+Nome estratto
+
+Tipologia: inalante, alimentare, controllo
+
+Numero lotto
+
+Casa farmaceutica
+
+Data inizio uso
+
+Data fine uso
+
+Il sistema deve permettere la chiusura manuale di un estratto (fine uso) e caricare automaticamente il primo estratto disponibile in magazzino con stesso nome (ordinato per data di scadenza crescente).
+
+2. Gestione Magazzino
+Per ogni estratto disponibile a magazzino, i campi obbligatori sono:
+
+Nome estratto
+
+Tipologia: inalante, alimentare, controllo
+
+Numero lotto
+
+Casa farmaceutica
+
+Data di scadenza
+
+Ogni volta che un estratto viene utilizzato (passa al pannello), va rimosso dal magazzino.
+
+3. Report Annuale
+Il sistema deve permettere l’estrazione di un report in formato stampabile (es. PDF o CSV) con l’elenco di tutti gli estratti utilizzati in un anno specificato, con:
+
+Nome estratto
+
+Tipologia
+
+Numero lotto
+
+Casa farmaceutica
+
+Data inizio uso
+
+Data fine uso
+
+Requisiti Tecnici
+Frontend: semplice interfaccia web (es. HTML/CSS + JS o React) per visualizzare pannelli, magazzino e generare report.
+
+Backend: Python (es. Flask o FastAPI) per la logica e gestione database.
+
+Database: SQLite per semplicità, con due tabelle principali:
+
+Magazzino
+
+UtilizziPannelli
+
+Logica di Caricamento Automatico
+Al momento della chiusura di un estratto su un pannello:
+
+Cercare nel magazzino il primo estratto disponibile (con data di scadenza più vicina e stesso nome).
+
+Se trovato, assegnarlo al pannello con nuova data inizio uso = data odierna.
+
+Aggiornare le tabelle di conseguenza.
+
+Limiti MVP
+Nessuna gestione utenti o autenticazione.
+
+Nessuna interfaccia avanzata, focus solo su funzionalità base.
+
+Report annuale generabile solo manualmente (es. cliccando un bottone con selezione anno).
+
+Estensioni Future (non incluse nel MVP)
+Tracciamento scorte minime.
+
+Notifiche su scadenze imminenti.
+
+Multi-ambulatorio / multi-utente.
+
+Backup e restore dei dati.
