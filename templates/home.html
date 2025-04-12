@@ -1,0 +1,107 @@
+{% extends 'layout.html' %}
+
+{% block title %}Home - Allergy Extract Management System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="display-4"><i class="fas fa-home me-2"></i> Dashboard</h1>
+    <p class="lead">Welcome to the Allergy Extract Management System</p>
+</div>
+
+<div class="row mb-4">
+    <!-- Stats Cards -->
+    <div class="col-md-3">
+        <div class="card bg-dark stats-card mb-3">
+            <div class="card-body text-center">
+                <div class="stats-icon text-primary">
+                    <i class="fas fa-layer-group"></i>
+                </div>
+                <h5 class="card-title">Panels</h5>
+                <p class="card-text display-6">{{ panel_count }}</p>
+                <a href="{{ url_for('panels') }}" class="btn btn-sm btn-outline-primary mt-2">View Panels</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="card bg-dark stats-card mb-3">
+            <div class="card-body text-center">
+                <div class="stats-icon text-success">
+                    <i class="fas fa-vial"></i>
+                </div>
+                <h5 class="card-title">Active Extracts</h5>
+                <p class="card-text display-6">{{ active_extracts }}</p>
+                <a href="{{ url_for('panels') }}" class="btn btn-sm btn-outline-success mt-2">View Active</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="card bg-dark stats-card mb-3">
+            <div class="card-body text-center">
+                <div class="stats-icon text-info">
+                    <i class="fas fa-boxes"></i>
+                </div>
+                <h5 class="card-title">Inventory</h5>
+                <p class="card-text display-6">{{ inventory_count }}</p>
+                <a href="{{ url_for('inventory') }}" class="btn btn-sm btn-outline-info mt-2">View Inventory</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="card bg-dark stats-card mb-3">
+            <div class="card-body text-center">
+                <div class="stats-icon text-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h5 class="card-title">Soon Expiring</h5>
+                <p class="card-text display-6">{{ soon_expiring }}</p>
+                <a href="{{ url_for('inventory') }}" class="btn btn-sm btn-outline-warning mt-2">Check Inventory</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card bg-dark mb-4">
+            <div class="card-header">
+                <h4><i class="fas fa-info-circle me-2"></i> System Information</h4>
+            </div>
+            <div class="card-body">
+                <h5>Welcome to the Allergy Extract Management System</h5>
+                <p>This application helps you manage:</p>
+                <ul>
+                    <li>Panels containing allergy extracts in use</li>
+                    <li>Inventory of available extracts</li>
+                    <li>Automatic replacement when extracts are used up</li>
+                    <li>Annual usage reporting</li>
+                </ul>
+                <p>Use the navigation menu to access different sections of the application.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card bg-dark">
+            <div class="card-header">
+                <h4><i class="fas fa-tasks me-2"></i> Quick Actions</h4>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-3">
+                    <a href="{{ url_for('panels') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-layer-group me-2"></i> Manage Panels
+                    </a>
+                    <a href="{{ url_for('inventory') }}" class="btn btn-outline-info">
+                        <i class="fas fa-boxes me-2"></i> Manage Inventory
+                    </a>
+                    <a href="{{ url_for('reports') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-file-alt me-2"></i> Generate Reports
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

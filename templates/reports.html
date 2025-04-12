@@ -1,0 +1,97 @@
+{% extends 'layout.html' %}
+
+{% block title %}Reports - Allergy Extract Management System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="display-4"><i class="fas fa-chart-bar me-2"></i> Reports</h1>
+    <p class="lead">Generate reports of allergy extract usage</p>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card bg-dark">
+            <div class="card-header">
+                <h4><i class="fas fa-file-alt me-2"></i> Annual Usage Report</h4>
+            </div>
+            <div class="card-body">
+                <p>Generate a report of all extracts used during a specific year.</p>
+                <form action="{{ url_for('generate_report') }}" method="post">
+                    <div class="mb-3">
+                        <label for="year" class="form-label">Select Year</label>
+                        <select class="form-select" id="year" name="year" required>
+                            <option value="">Select a year</option>
+                            {% for year in years %}
+                                <option value="{{ year }}">{{ year }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-file-download me-2"></i> Generate CSV Report
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+        <div class="card bg-dark">
+            <div class="card-header">
+                <h4><i class="fas fa-info-circle me-2"></i> Report Information</h4>
+            </div>
+            <div class="card-body">
+                <p>The annual report contains the following information:</p>
+                <ul>
+                    <li>Extract name</li>
+                    <li>Type (inalante, alimentare, controllo)</li>
+                    <li>Lot number</li>
+                    <li>Manufacturer</li>
+                    <li>Start date of usage</li>
+                    <li>End date of usage</li>
+                    <li>Panel name</li>
+                </ul>
+                <div class="alert alert-info">
+                    <i class="fas fa-lightbulb me-2"></i> Reports are generated in CSV format that can be opened in Excel or other spreadsheet applications.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card bg-dark mt-4">
+    <div class="card-header">
+        <h4><i class="fas fa-calendar-alt me-2"></i> Future Report Features</h4>
+    </div>
+    <div class="card-body">
+        <p>In future versions, the following reporting features will be available:</p>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card bg-dark shadow-sm mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-exclamation-triangle text-warning me-2"></i> Expiration Alerts</h5>
+                        <p class="card-text">Reports on extracts approaching expiration date.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-dark shadow-sm mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-chart-line text-info me-2"></i> Usage Trends</h5>
+                        <p class="card-text">Reports on extract usage trends over time.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-dark shadow-sm mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-chart-pie text-primary me-2"></i> Extract Distribution</h5>
+                        <p class="card-text">Reports on extract type distribution.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

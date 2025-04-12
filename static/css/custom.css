@@ -1,0 +1,86 @@
+/* Custom CSS for Allergy Extract Management System */
+
+.panel-card {
+    margin-bottom: 20px;
+    transition: transform 0.2s;
+}
+
+.panel-card:hover {
+    transform: translateY(-5px);
+}
+
+.extract-item {
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+}
+
+.extract-active {
+    border-left: 4px solid var(--bs-success);
+}
+
+.extract-closed {
+    border-left: 4px solid var(--bs-secondary);
+    opacity: 0.75;
+}
+
+.expiring-soon {
+    border-left: 4px solid var(--bs-warning);
+}
+
+.expired {
+    border-left: 4px solid var(--bs-danger);
+}
+
+.stats-card {
+    border-radius: 10px;
+    transition: all 0.3s;
+}
+
+.stats-card:hover {
+    transform: scale(1.03);
+}
+
+.stats-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.page-header {
+    padding: 20px 0;
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--bs-gray-700);
+}
+
+.table-responsive {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+/* Tooltip styling */
+.custom-tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.custom-tooltip .tooltip-text {
+    visibility: hidden;
+    width: 200px;
+    background-color: var(--bs-dark);
+    color: var(--bs-light);
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.custom-tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
