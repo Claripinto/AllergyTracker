@@ -1,0 +1,30 @@
+/* static/style.css */
+body {
+    font-family: sans-serif;
+}
+
+.navbar {
+    margin-bottom: 20px;
+}
+
+.table th {
+    background-color: #f8f9fa; /* Light grey for table headers */
+}
+
+.alert {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+/* Add some spacing to forms */
+form div.form-group {
+    margin-bottom: 1rem;
+}
+
+/* Ensure buttons in table rows are spaced a bit */
+.table td form {
+    margin-right: 5px;
+}
+.table td form:last-child {
+    margin-right: 0;
+}

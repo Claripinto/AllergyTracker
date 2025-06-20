@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block title %}Report: Nearing Expiry{% endblock %}
+{% block content %}
+  <h2>Report: Extracts Nearing Expiry (within {{ days_threshold }} days)</h2>
+  <form method="POST" action="{{ url_for('report_nearing_expiry') }}" class="form-inline mb-3">
+    <div class="form-group mr-2">
+      <label for="days_threshold" class="mr-2">Days Threshold:</label>
+      <input type="number" name="days_threshold" id="days_threshold" class="form-control" value="{{ days_threshold }}">
+    </div>
+    <button type="submit" class="btn btn-primary">View Report</button>
+  </form>
+  {% if extracts %}
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Batch No.</th>
+        <th>Expiry Date</th>
+        <th>Qty</th>
+        <th>Days Left</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for extract in extracts %}
+      <tr>
+        <td>{{ extract.id }}</td>
+        <td>{{ extract.name }}</td>
+        <td>{{ extract.batch_number }}</td>
+        <td>{{ extract.expiry_date }}</td>
+        <td>{{ extract.quantity_on_hand }}</td>
+        <td>{{ extract.days_left }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>No extracts found nearing expiry within {{ days_threshold }} days.</p>
+  {% endif %}
+  <a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">Back to Main List</a>
+{% endblock %}

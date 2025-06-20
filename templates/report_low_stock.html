@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block title %}Report: Low Stock{% endblock %}
+{% block content %}
+  <h2>Report: Low Stock Extracts (at or below {{ quantity_threshold }} units)</h2>
+  <form method="POST" action="{{ url_for('report_low_stock') }}" class="form-inline mb-3">
+    <div class="form-group mr-2">
+      <label for="quantity_threshold" class="mr-2">Quantity Threshold:</label>
+      <input type="number" name="quantity_threshold" id="quantity_threshold" class="form-control" value="{{ quantity_threshold }}">
+    </div>
+    <button type="submit" class="btn btn-primary">View Report</button>
+  </form>
+  {% if extracts %}
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Batch No.</th>
+        <th>Quantity on Hand</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for extract in extracts %}
+      <tr>
+        <td>{{ extract.id }}</td>
+        <td>{{ extract.name }}</td>
+        <td>{{ extract.batch_number }}</td>
+        <td>{{ extract.quantity_on_hand }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>No extracts found with low stock (at or below {{ quantity_threshold }} units).</p>
+  {% endif %}
+  <a href="{{ url_for('index') }}" class="btn btn-secondary mt-3">Back to Main List</a>
+{% endblock %}

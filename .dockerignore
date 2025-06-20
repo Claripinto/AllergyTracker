@@ -1,0 +1,42 @@
+# Git version control
+.git
+.gitignore
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+env/
+.venv/
+*.env
+
+# IDE and editor specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Local database files (these should be managed by volumes in production)
+*.db
+*.db-journal # SQLite journal files
+test_*.db # Test database files
+
+# Operating System specific files
+.DS_Store
+Thumbs.db
+
+# Docker related files (if any locally, like a local docker-compose.yml not for the image itself)
+docker-compose.local.yml
+Dockerfile.dev
+
+# Logs
+*.log
+
+# Test reports or coverage data
+htmlcov/
+.coverage
+*.coverage.*

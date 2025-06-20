@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block title %}{{ form_title|default('Extract Form') }}{% endblock %}
+{% block content %}
+  <h2>{{ form_title|default('Manage Extract') }}</h2>
+  <form method="post">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" class="form-control" id="name" name="name" value="{{ extract.name if extract else '' }}" required>
+    </div>
+    <div class="form-group">
+      <label for="batch_number">Batch Number</label>
+      <input type="text" class="form-control" id="batch_number" name="batch_number" value="{{ extract.batch_number if extract else '' }}">
+    </div>
+    <div class="form-group">
+      <label for="expiry_date">Expiry Date (YYYY-MM-DD)</label>
+      <input type="date" class="form-control" id="expiry_date" name="expiry_date" value="{{ extract.expiry_date if extract else '' }}">
+    </div>
+    <div class="form-group">
+      <label for="quantity_on_hand">Quantity on Hand</label>
+      <input type="number" class="form-control" id="quantity_on_hand" name="quantity_on_hand" value="{{ extract.quantity_on_hand if extract else 0 }}" required>
+    </div>
+    <div class="form-group">
+      <label for="storage_location">Storage Location</label>
+      <input type="text" class="form-control" id="storage_location" name="storage_location" value="{{ extract.storage_location if extract else '' }}">
+    </div>
+    <div class="form-group">
+      <label for="supplier_details">Supplier Details</label>
+      <input type="text" class="form-control" id="supplier_details" name="supplier_details" value="{{ extract.supplier_details if extract else '' }}">
+    </div>
+    <div class="form-group">
+      <label for="date_received">Date Received (YYYY-MM-DD)</label>
+      <input type="date" class="form-control" id="date_received" name="date_received" value="{{ extract.date_received if extract else '' }}">
+    </div>
+    <div class="form-group">
+      <label for="notes">Notes</label>
+      <textarea class="form-control" id="notes" name="notes">{{ extract.notes if extract else '' }}</textarea>
+    </div>
+    <button type="submit" class="btn btn-success">{{ submit_button_text|default('Submit') }}</button>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+  </form>
+{% endblock %}
